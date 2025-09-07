@@ -10,7 +10,7 @@ export const restrictWriteMethods = (
   const isWriteMethod = ["POST", "PATCH", "PUT", "DELETE"].includes(req.method);
 
   // If allowedOrigins is empty, allow all origins
-  if (isWriteMethod && allowedOrigins.length > 0 && (!origin || !allowedOrigins.includes(origin))) {
+  if (isWriteMethod && allowedOrigins.length > 0 && origin && !allowedOrigins.includes(origin)) {
     return res
       .status(403)
       .json({ message: "Forbidden: Origin not allowed for write operations." });
@@ -18,3 +18,4 @@ export const restrictWriteMethods = (
 
   next();
 };
+

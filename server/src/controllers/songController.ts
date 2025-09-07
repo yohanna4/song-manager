@@ -56,8 +56,8 @@ export const getSongById = async (req: Request, res: Response) => {
 
 export const createSong = async (req: Request, res: Response) => {
   try {
-    const { title, artist, album, genre, releaseDate } = req.body;
-    const newSong = new Song({ title, artist, album, genre, releaseDate });
+    const { title, artist, album, genre } = req.body;
+    const newSong = new Song({ title, artist, album, genre });
     await newSong.save();
     res.status(201).json(newSong);
   } catch (err) {
@@ -75,7 +75,7 @@ export const updateSong = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(400).json({ error: "Failed to update song", details: err });
   }
-};
+}; 
 
 export const deleteSong = async (req: Request, res: Response) => {
   try {

@@ -5,7 +5,6 @@ export interface ISong extends Document {
   artist: string;
   album: string;
   genre: string;
-  releaseDate: Date;
 }
 
 const SongSchema: Schema = new Schema(
@@ -14,9 +13,8 @@ const SongSchema: Schema = new Schema(
     artist: { type: String, required: true },
     album: { type: String, required: true },
     genre: { type: String, required: true },
-    releaseDate: { type: Date, required: true },
   },
-  { timestamps: true }
+  { timestamps: true } 
 );
 
 export default mongoose.model<ISong>("Song", SongSchema);

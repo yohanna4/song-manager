@@ -1,5 +1,2 @@
-const corsEnv = process.env.CORS_ORIGINS || "";
-
-export const allowedOrigins: string[] = corsEnv
-  ? corsEnv.split(",").map((origin) => origin.trim())
-  : [];
+const allowedOriginsEnv = process.env.ALLOWED_ORIGINS || "";
+export const allowedOrigins = allowedOriginsEnv.split(",").filter(Boolean);

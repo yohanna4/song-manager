@@ -2,7 +2,7 @@ import { CorsOptions } from "cors";
  
 const corsOptions: CorsOptions = {
   origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "PATCH", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
