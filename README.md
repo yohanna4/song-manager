@@ -15,7 +15,7 @@ song-manager/
 ## Prerequisites
 
 - Node.js (v20+ recommended)
-- npm or yarn
+- npm
 
 ## Setup
 
@@ -52,7 +52,3 @@ npm run dev     # Starts the React app (e.g., on http://localhost:5173)
 
 * Ensure the server is running before using the client.
 * You can change the API base URL in the client if the server runs on a different port.
-
-## License
-
-MIT
