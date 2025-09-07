@@ -1,28 +1,28 @@
 version: "3.9"
-services:
-  mongo:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
-  server:
-    build: ./server
-    environment:
-      - PORT=5000
-      - MONGODB_URI=mongodb://mongo:27017/songs-db
+services:
+  backend:
+    build: .
+    container_name: song-manager-backend
     ports:
       - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=${MONGO_URI}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+    env_file:
+      - .env
     depends_on:
       - mongo
+    restart: unless-stopped
+    command: npm run start
 
-  client:
-    build: ./client
+  mongo:
+    image: mongo:7
+    container_name: song-manager-mongo
+    restart: unless-stopped
     ports:
-      - "5173:5173"   # Vite default dev port
-    depends_on:
-      - server
-
-volumes:
-  mongo_data:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: songadmin
+      MONGO_INITDB_ROOT_PASSWORD: yourpassword

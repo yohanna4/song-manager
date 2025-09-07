@@ -1,19 +1,36 @@
-import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import express from "express";
+
+import corsOptions from "./config/corsOptions.js"; // ✅ named import
+
+// import { corsOptions } from "./config/corsOptions.js";
+import { connectDB } from "./config/db.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import songRoutes from "./routes/songRoutes.js";
 
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://mongo:27017/songs-db")
-  .then(() => console.log("MongoDB connected"))
-  .catch(console.error);
+connectDB();
 
-app.get("/health", (_req, res) => res.json({ status: "ok" }));
+app.use((req, res, next) => {
+  console.log("Incoming request:", req.method, req.url);
+  next();
+});
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get("/", (req, res) => {
+  res.send("Song-Manager API is running...");
+});
+
+app.use("/song", songRoutes);
+
+app.use(errorHandler);
+
+const PORT = Number(process.env.PORT) || 5050;
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server running on port ${PORT}`)
+);
