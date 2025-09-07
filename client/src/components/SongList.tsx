@@ -131,6 +131,20 @@ const AddButtonContainer = styled.div`
   margin-bottom: 1rem; /* optional spacing above the list */
 `;
 
+const FilterContainer = styled.div`
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Selects = styled.select`
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-family: "Inter", sans-serif;
+`;
+
 const SongList: React.FC<SongListProps> = ({
   songs,
   onCreate,
@@ -147,6 +161,9 @@ const SongList: React.FC<SongListProps> = ({
   });
   const [editSong, setEditSong] = useState<Song | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  // New state for genre filter
+  const [selectedGenre, setSelectedGenre] = useState<string>("All");
 
   const openCreateModal = () => {
     setEditSong(null);
@@ -182,6 +199,15 @@ const SongList: React.FC<SongListProps> = ({
     setDeleteModalOpen(false);
   };
 
+  // Filter songs by selected genre
+  const filteredSongs =
+    selectedGenre === "All"
+      ? songs
+      : songs.filter((song) => song.genre === selectedGenre);
+
+  // Get unique genres for dropdown
+  const genres = Array.from(new Set(songs.map((song) => song.genre)));
+
   if (!songs || songs.length === 0) {
     return (
       <>
@@ -198,8 +224,28 @@ const SongList: React.FC<SongListProps> = ({
       <AddButtonContainer>
         <ActionButton onClick={openCreateModal}>+ Add Song</ActionButton>
       </AddButtonContainer>
+
+      {/* Genre Filter */}
+      <FilterContainer>
+        <label htmlFor="genreFilter">Filter by genre:</label>
+        <Selects
+          id="genreFilter"
+          value={selectedGenre}
+          onChange={(e: { target: { value: React.SetStateAction<string> } }) =>
+            setSelectedGenre(e.target.value)
+          }
+        >
+          <option value="All">All</option>
+          {genres.map((genre) => (
+            <option key={genre} value={genre}>
+              {genre}
+            </option>
+          ))}
+        </Selects>
+      </FilterContainer>
+
       <SongListContainer>
-        {songs.map((song) => (
+        {filteredSongs.map((song) => (
           <SongListItem key={song._id}>
             <SongInfo>
               <strong>{song.title}</strong> by {song.artist}
@@ -225,7 +271,7 @@ const SongList: React.FC<SongListProps> = ({
         ))}
       </SongListContainer>
 
-      {/* Create / Edit Modal */}
+      {/* Modals (same as before) */}
       {isModalOpen && (
         <ModalOverlay>
           <ModalBox>
@@ -258,7 +304,6 @@ const SongList: React.FC<SongListProps> = ({
                 setFormData({ ...formData, genre: e.target.value })
               }
             />
-
             <ModalActions>
               <ActionButton type="button" onClick={() => setModalOpen(false)}>
                 Cancel
@@ -271,7 +316,6 @@ const SongList: React.FC<SongListProps> = ({
         </ModalOverlay>
       )}
 
-      {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <ModalOverlay>
           <ModalBox>
