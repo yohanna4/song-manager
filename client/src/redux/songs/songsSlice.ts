@@ -42,7 +42,7 @@ const songsSlice = createSlice({
     },
 
     // ----- CREATE -----
-    createSongStart(state, action: PayloadAction<Omit<Song, "_id">>) {
+    createSongStart(state, _action: PayloadAction<Omit<Song, "_id">>) {
       state.loading = true;
       state.error = null;
     },
@@ -56,7 +56,7 @@ const songsSlice = createSlice({
     },
 
     // ----- UPDATE -----
-    updateSongStart(state, action: PayloadAction<{ _id: string; song: Partial<Song> }>) {
+    updateSongStart(state, _action: PayloadAction<{ _id: string; song: Partial<Song> }>) {
       state.loading = true;
       state.error = null;
     },
@@ -70,7 +70,7 @@ const songsSlice = createSlice({
     },
 
     // ----- DELETE -----
-    deleteSongStart(state, action: PayloadAction<string>) {
+    deleteSongStart(state, _action: PayloadAction<string>) {
       state.loading = true;
       state.error = null;
     },
